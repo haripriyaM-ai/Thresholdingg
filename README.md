@@ -70,10 +70,7 @@ plt.show()
 ```
 ## Output
 
-### Original Image
-### Global Thresholding
-### Adaptive Thresholding
-### Optimum Global Thesholding using Otsu's Method
+### Original Image, Global Thresholding, Adaptive Thresholding and Optimum Global Thesholding using Otsu's Method
 
 <img width="859" height="700" alt="Screenshot 2025-11-04 193444" src="https://github.com/user-attachments/assets/4d2b5181-b26f-4c8a-8170-05b8e24fb8c3" />
 
