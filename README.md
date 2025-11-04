@@ -34,45 +34,64 @@ Display the original image and the segmented images obtained from global, adapti
 ## Program
 
 ```python
-
+# Load the necessary packages
 import cv2
+import numpy as np
 import matplotlib.pyplot as plt
 
-# Step 1: Load the image and convert it to grayscale
-image = cv2.imread("input.png") 
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+# Read the Image and convert to grayscale
+image = cv2.imread("input.png")   # Read the image (color)
+image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # Convert to grayscale
 
-# Step 2: Apply Global Thresholding (Manually selected threshold)
-_, global_thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+# Global Thresholding
+ret, thresh_dipt1 = cv2.threshold(image_gray,86,255,cv2.THRESH_BINARY)
+ret, thresh_dipt2 = cv2.threshold(image_gray,86,255,cv2.THRESH_BINARY_INV)
+ret, thresh_dipt3 = cv2.threshold(image_gray,86,255,cv2.THRESH_TOZERO)
+ret, thresh_dipt4 = cv2.threshold(image_gray,86,255,cv2.THRESH_TOZERO_INV)
+ret, thresh_dipt5 = cv2.threshold(image_gray,100,255,cv2.THRESH_TRUNC)
 
-# Step 3: Apply Adaptive Thresholding
-adaptive_thresh = cv2.adaptiveThreshold(
-    gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2
-)
+# Otsu's Thresholding
+ret, thresh_dipt6 = cv2.threshold(image_gray,0,255,cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-# Step 4: Apply Otsu's Thresholding
-_, otsu_thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+# Adaptive Thresholding
+thresh_dipt7 = cv2.adaptiveThreshold(image_gray,255,cv2.ADAPTIVE_THRESH_MEAN_C,
+                                     cv2.THRESH_BINARY,11,2)
+thresh_dipt8 = cv2.adaptiveThreshold(image_gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                     cv2.THRESH_BINARY,11,2)
 
-# Step 5: Display all results
-titles = ["Original Image", "Global Thresholding", "Adaptive Thresholding", "Otsu Thresholding"]
-images = [gray, global_thresh, adaptive_thresh, otsu_thresh]
+# Display the results
+titles = ["Gray Image", "Binary", "Binary Inverse", "To Zero",
+          "To Zero Inverse", "Truncate", "Otsu", "Adaptive Mean", "Adaptive Gaussian"]
 
-plt.figure(figsize=(10, 7))
+images = [image_gray, thresh_dipt1, thresh_dipt2, thresh_dipt3,
+          thresh_dipt4, thresh_dipt5, thresh_dipt6, thresh_dipt7, thresh_dipt8]
 
-for i in range(4):
-    plt.subplot(2, 2, i+1)
-    plt.imshow(images[i], cmap="gray")
-    plt.title(titles[i])
+for i in range(9):
+    plt.figure(figsize=(8,4))
+    plt.subplot(1,2,1)
+    plt.title("Original Image")
+    plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     plt.axis("off")
-
-plt.show()
+    
+    plt.subplot(1,2,2)
+    plt.title(titles[i])
+    plt.imshow(images[i], cmap="gray")
+    plt.axis("off")
+    
+    plt.show()
 
 ```
-## Output
+## Outputs
+<img width="500" height="700" alt="Screenshot 2025-11-04 193444" src="https://github.com/user-attachments/assets/d9cc5bdb-306b-499d-a55c-16cb6c066226" />
+<br>
+<img width="500" height="700" alt="Screenshot 2025-11-04 194437" src="https://github.com/user-attachments/assets/34a5967b-2ee1-4fb5-9b94-84f249f90709" />
+<br>
+<img width="500" height="700" alt="Screenshot 2025-11-04 194452" src="https://github.com/user-attachments/assets/bb059406-6313-4066-a2d6-5466700fff4e" />
+<br>
+<img width="500" height="750" alt="Screenshot 2025-11-04 194509" src="https://github.com/user-attachments/assets/ae14a19f-8f43-4fd4-844a-b75baf95ff66" />
+<br>
+<img width="500" height="700" alt="Screenshot 2025-11-04 194522" src="https://github.com/user-attachments/assets/1387863e-8482-4008-87f6-1c2b56ee845a" />
 
-### Original Image, Global Thresholding, Adaptive Thresholding and Optimum Global Thesholding using Otsu's Method
-
-<img width="859" height="700" alt="Screenshot 2025-11-04 193444" src="https://github.com/user-attachments/assets/4d2b5181-b26f-4c8a-8170-05b8e24fb8c3" />
 
 
 ## Result
